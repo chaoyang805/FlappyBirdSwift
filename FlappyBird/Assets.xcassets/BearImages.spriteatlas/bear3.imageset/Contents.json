@@ -2,11 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "Spaceship.png",
+      "filename" : "bear3~mac.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "bear3@2x~mac.png",
       "scale" : "2x"
     },
     {
