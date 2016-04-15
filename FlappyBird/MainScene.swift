@@ -20,9 +20,12 @@ class MainScene: SKScene {
     var birdTextures: [SKTexture]!
     var groundTextures: [SKTexture]!
     
+    var started = false
     
     override init(size: CGSize) {
         super.init(size: size)
+        
+        physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         background = SKSpriteNode(texture: SKTexture(imageNamed: "Background"), size: size)
         self.addChild(background)
         background.anchorPoint = CGPoint(x: 0, y: 0)
@@ -33,8 +36,8 @@ class MainScene: SKScene {
         
         SKTextureAtlas.preloadTextureAtlases([birdTextureAtlas,groundTextureAtlas]) {
             
-            self.addBird()
             self.addGround()
+            self.addBird()
         }
       
     }
@@ -50,6 +53,8 @@ class MainScene: SKScene {
         let action = SKAction.animateWithTextures(self.birdTextures, timePerFrame: 0.1)
         self.bird.runAction(SKAction.repeatActionForever(action),withKey: "birdFly")
         self.addChild(self.bird)
+        bird.physicsBody = SKPhysicsBody(rectangleOfSize: bird.frame.size)
+        bird.physicsBody?.affectedByGravity = false
     }
     
     func addGround() {
@@ -61,15 +66,20 @@ class MainScene: SKScene {
             groundTextures.append(texture)
         }
         ground = SKSpriteNode(texture: groundTextures[0])
-        ground.anchorPoint = CGPointZero
-        ground.position = CGPointZero
+        ground.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        
+        scale = self.frame.width / ground.frame.width
+        ground.setScale(scale)
+        
+        ground.position = CGPoint(x: ground.frame.width / 2, y: ground.frame.height / 2)
         let action = SKAction.animateWithTextures(groundTextures, timePerFrame: 0.05, resize: false, restore: true)
         ground.runAction(SKAction.repeatActionForever(action), withKey: "groundMove")
         addChild(ground)
-        let scale = self.frame.width / ground.frame.width
-        ground.setScale(scale)
+        
+        ground.physicsBody = SKPhysicsBody(rectangleOfSize: ground.frame.size)
     }
     
+    var scale: CGFloat!
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -79,6 +89,18 @@ class MainScene: SKScene {
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
+        
+        if !started {
+            started = true
+            bird.physicsBody?.affectedByGravity = true
+            return
+        }
+        bird.physicsBody?.velocity = CGVector(dx: 0, dy: 400)
+    }
+}
+
+extension CGSize {
+    func CGSizeWithScale(scale: CGFloat) -> CGSize {
+        return CGSizeMake(self.width * scale, self.height * scale)
     }
 }
