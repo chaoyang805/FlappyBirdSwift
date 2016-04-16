@@ -31,6 +31,17 @@ class PipeGenerator: NSObject {
         }
     }
     
+    func getPipe() -> (upBlock: Block, downBlock: Block) {
+
+        let ratio = CGFloat(arc4random_uniform(6) + 2) / 10.0
+        let upBlock = Block.blockInDirection(.Up, withHeightRatio: ratio)
+        let downBlock = Block.blockInDirection(.Down, withHeightRatio: 1 - ratio)
+        
+        upBlock.position = CGPoint(x: sceneSize.width, y: upBlock.frame.height / 2 + floorHeight)
+        downBlock.position = CGPoint(x: sceneSize.width, y: sceneSize.height - downBlock.frame.height / 2)
+        return (upBlock, downBlock)
+    }
+    
     func getPipes() -> (upPipe: SKSpriteNode,downPipe: SKSpriteNode) {
         
         
@@ -38,7 +49,6 @@ class PipeGenerator: NSObject {
         
 //        let upPipeHeight = (sceneSize.height - gap - floorHeight) * ratio
 //        let downPipeHeight = (sceneSize.height - gap - floorHeight) * (1 - ratio)
-        
         let upPipeRect = CGRect(x: 0, y: 1 - ratio, width: 1, height: ratio)
         let scaledUpPipe = SKTexture(rect: upPipeRect, inTexture: upPipeTexture)
         let upPipe = SKSpriteNode(texture: scaledUpPipe)
@@ -58,23 +68,22 @@ class PipeGenerator: NSObject {
         downPipe.position = CGPoint(x: sceneSize.width, y: sceneSize.height - downPipe.frame.height / 2)
         
         upPipe.physicsBody = SKPhysicsBody(rectangleOfSize: upPipe.frame.size)
-        upPipe.physicsBody?.velocity = CGVectorMake(-60, 0)
+
         upPipe.physicsBody?.affectedByGravity = false
         upPipe.physicsBody?.allowsRotation = false
-        upPipe.physicsBody?.restitution = 0
         upPipe.physicsBody?.categoryBitMask = BlockCategory
         upPipe.physicsBody?.contactTestBitMask = EdgeCategory
         upPipe.physicsBody?.collisionBitMask = 0
-        
+        upPipe.physicsBody?.restitution = 0
+        upPipe.runAction(SKAction.repeatActionForever(SKAction.moveByX(-15, y: 0, duration: 0.3)))
         downPipe.physicsBody = SKPhysicsBody(rectangleOfSize: downPipe.frame.size)
-        downPipe.physicsBody?.velocity = CGVectorMake(-60, 0)
         downPipe.physicsBody?.affectedByGravity = false
         downPipe.physicsBody?.allowsRotation = false
         downPipe.physicsBody?.restitution = 0
         downPipe.physicsBody?.categoryBitMask = BlockCategory
         downPipe.physicsBody?.contactTestBitMask = EdgeCategory
         downPipe.physicsBody?.collisionBitMask = 0
-        
+        downPipe.runAction(SKAction.repeatActionForever(SKAction.moveByX(-15, y: 0, duration: 0.3)))
         return (upPipe,downPipe)
     }
     

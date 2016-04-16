@@ -116,9 +116,6 @@ class MainScene: SKScene,SKPhysicsContactDelegate {
     var lastUpdateTime: NSTimeInterval = -1
     var pipeGeneragtor: PipeGenerator!
     
-    var downPipe: SKSpriteNode!
-    var upPipe: SKSpriteNode!
-    var first = true
     override func update(currentTime: NSTimeInterval) {
         
         if !moveToView || ground == nil || bird == nil {
@@ -131,30 +128,17 @@ class MainScene: SKScene,SKPhysicsContactDelegate {
         
         if lastUpdateTime <= 0 {
             pipeGeneragtor = PipeGenerator(sceneSize: self.frame.size, floorHeight: ground.frame.height)
-            
             lastUpdateTime = currentTime
         }
-        
         
         if currentTime - lastUpdateTime >= 4 {
-            let pipes = pipeGeneragtor.getPipes()
-            if first {
-                downPipe = pipes.downPipe
-                upPipe = pipes.upPipe
-                first = false
-            }
+            let pipes = pipeGeneragtor.getPipe()
             
-            NSLog("downPipe's speed:\(downPipe.physicsBody?.velocity)")
-            NSLog("upPipe's speed:\(upPipe.physicsBody?.velocity)")
-            self.addChild(pipes.downPipe)
-            self.addChild(pipes.upPipe)
+            self.addChild(pipes.downBlock)
+            self.addChild(pipes.upBlock)
             
             lastUpdateTime = currentTime
         }
-    }
-    
-    func removeUnShownPipes() {
-        
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -196,14 +180,12 @@ class MainScene: SKScene,SKPhysicsContactDelegate {
     }
     
     func onGameOver() {
-        bird.removeAllActions()
+        for child in children {
+            child.removeAllActions()
+        }
+        bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
         bird.physicsBody?.affectedByGravity = false
         
-        ground.removeAllActions()
-        
-        for child in children {
-            child.physicsBody?.velocity = CGVectorMake(0, 0)
-        }
         gameOver = true
         NSLog("gameOver")
     }

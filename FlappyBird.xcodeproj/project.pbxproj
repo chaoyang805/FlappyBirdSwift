@@ -18,6 +18,7 @@
 		21ADF1041CBF361C00ACE558 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21ADF1021CBF361C00ACE558 /* LaunchScreen.storyboard */; };
 		21ADF10F1CBF361C00ACE558 /* FlappyBirdTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21ADF10E1CBF361C00ACE558 /* FlappyBirdTests.swift */; };
 		21ADF11A1CBF361C00ACE558 /* FlappyBirdUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21ADF1191CBF361C00ACE558 /* FlappyBirdUITests.swift */; };
+		21ECE5621CC28C8700AFBAB0 /* Block.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21ECE5611CC28C8700AFBAB0 /* Block.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		21ADF1151CBF361C00ACE558 /* FlappyBirdUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlappyBirdUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		21ADF1191CBF361C00ACE558 /* FlappyBirdUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlappyBirdUITests.swift; sourceTree = "<group>"; };
 		21ADF11B1CBF361C00ACE558 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		21ECE5611CC28C8700AFBAB0 /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +113,7 @@
 				21ADF0F51CBF361C00ACE558 /* AppDelegate.swift */,
 				21ADF0FB1CBF361C00ACE558 /* GameViewController.swift */,
 				215B5E971CC07C6C0060199B /* PipeGenerator.swift */,
+				21ECE5611CC28C8700AFBAB0 /* Block.swift */,
 				21ADF0FD1CBF361C00ACE558 /* Main.storyboard */,
 				21ADF1001CBF361C00ACE558 /* Assets.xcassets */,
 				21ADF1021CBF361C00ACE558 /* LaunchScreen.storyboard */,
@@ -273,6 +276,7 @@
 				21ADF0FA1CBF361C00ACE558 /* GameScene.swift in Sources */,
 				215335D81CBF8B42004A4E99 /* MainScene.swift in Sources */,
 				21ADF0FC1CBF361C00ACE558 /* GameViewController.swift in Sources */,
+				21ECE5621CC28C8700AFBAB0 /* Block.swift in Sources */,
 				21ADF0F61CBF361C00ACE558 /* AppDelegate.swift in Sources */,
 				215B5E981CC07C6C0060199B /* PipeGenerator.swift in Sources */,
 			);
