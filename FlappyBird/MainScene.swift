@@ -8,7 +8,12 @@
 
 import SpriteKit
 
-class MainScene: SKScene {
+let EdgeCategory: UInt32 = 0x1 << 0
+let FloorCategory: UInt32 = 0x1 << 1
+let BirdCategory: UInt32 = 0x1 << 2
+let BlockCategory: UInt32 = 0x1 << 3
+
+class MainScene: SKScene,SKPhysicsContactDelegate {
     
     var background: SKSpriteNode!
     var bird: SKSpriteNode!
@@ -22,10 +27,17 @@ class MainScene: SKScene {
     
     var started = false
     
+    var gameOver = false
+    
     override init(size: CGSize) {
         super.init(size: size)
+        let physicsFrame = CGRect(x: self.frame.origin.x - 25, y: self.frame.origin.y, width: self.frame.width + 50, height: self.frame.height)
+        physicsBody = SKPhysicsBody(edgeLoopFromRect: physicsFrame)
+        physicsBody?.categoryBitMask = EdgeCategory
+        physicsBody?.contactTestBitMask = 0
+        physicsBody?.collisionBitMask = 0
+        self.physicsWorld.contactDelegate = self
         
-        physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         background = SKSpriteNode(texture: SKTexture(imageNamed: "Background"), size: size)
         self.addChild(background)
         background.anchorPoint = CGPoint(x: 0, y: 0)
@@ -49,12 +61,20 @@ class MainScene: SKScene {
         self.birdTextures = [texture0,texture1,texture2]
         
         self.bird = SKSpriteNode(texture: self.birdTextures[0])
-        self.bird.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame))
+        bird.setScale(1.5)
+        self.bird.position = CGPoint(x: self.frame.width / 3, y: CGRectGetMidY(self.frame))
         let action = SKAction.animateWithTextures(self.birdTextures, timePerFrame: 0.1)
         self.bird.runAction(SKAction.repeatActionForever(action),withKey: "birdFly")
         self.addChild(self.bird)
+        
+        
         bird.physicsBody = SKPhysicsBody(rectangleOfSize: bird.frame.size)
         bird.physicsBody?.affectedByGravity = false
+        bird.physicsBody?.allowsRotation = false
+        
+        bird.physicsBody?.categoryBitMask = BirdCategory
+        bird.physicsBody?.contactTestBitMask = BlockCategory | FloorCategory
+        bird.physicsBody?.collisionBitMask = FloorCategory | BlockCategory
     }
     
     func addGround() {
@@ -77,25 +97,126 @@ class MainScene: SKScene {
         addChild(ground)
         
         ground.physicsBody = SKPhysicsBody(rectangleOfSize: ground.frame.size)
+        ground.physicsBody?.affectedByGravity = false
+        ground.physicsBody?.categoryBitMask = FloorCategory
+        ground.physicsBody?.contactTestBitMask = 0
+        ground.physicsBody?.collisionBitMask = 0
+       
     }
     
     var scale: CGFloat!
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+    var moveToView = false
     override func didMoveToView(view: SKView) {
+        moveToView = true
+    }
     
+    var lastUpdateTime: NSTimeInterval = -1
+    var pipeGeneragtor: PipeGenerator!
+    
+    var downPipe: SKSpriteNode!
+    var upPipe: SKSpriteNode!
+    var first = true
+    override func update(currentTime: NSTimeInterval) {
+        
+        if !moveToView || ground == nil || bird == nil {
+            return
+        }
+        
+        if gameOver {
+            return
+        }
+        
+        if lastUpdateTime <= 0 {
+            pipeGeneragtor = PipeGenerator(sceneSize: self.frame.size, floorHeight: ground.frame.height)
+            
+            lastUpdateTime = currentTime
+        }
+        
+        
+        if currentTime - lastUpdateTime >= 4 {
+            let pipes = pipeGeneragtor.getPipes()
+            if first {
+                downPipe = pipes.downPipe
+                upPipe = pipes.upPipe
+                first = false
+            }
+            
+            NSLog("downPipe's speed:\(downPipe.physicsBody?.velocity)")
+            NSLog("upPipe's speed:\(upPipe.physicsBody?.velocity)")
+            self.addChild(pipes.downPipe)
+            self.addChild(pipes.upPipe)
+            
+            lastUpdateTime = currentTime
+        }
+    }
+    
+    func removeUnShownPipes() {
+        
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if gameOver {
+            return
+        }
         
         if !started {
             started = true
             bird.physicsBody?.affectedByGravity = true
             return
         }
+        
         bird.physicsBody?.velocity = CGVector(dx: 0, dy: 400)
+    }
+    
+    // MARK: SKPhysicsContactDelegate
+    func didBeginContact(contact: SKPhysicsContact) {
+        let nodeA = contact.bodyA.node
+        let nodeB = contact.bodyB.node
+        
+        switch (nodeA?.physicsBody?.categoryBitMask)! | (nodeB?.physicsBody?.categoryBitMask)! {
+        case BirdCategory | BlockCategory:
+            onGameOver()
+            
+        case BirdCategory | FloorCategory:
+            onGameOver()
+            
+        case BlockCategory | EdgeCategory:
+            if nodeA?.physicsBody?.categoryBitMask < nodeB?.physicsBody?.categoryBitMask {
+                pipe(nodeB, contactEdge: nodeA)
+            } else {
+                pipe(nodeA, contactEdge: nodeB)
+            }
+            
+        default:
+            break
+        }
+    }
+    
+    func onGameOver() {
+        bird.removeAllActions()
+        bird.physicsBody?.affectedByGravity = false
+        
+        ground.removeAllActions()
+        
+        for child in children {
+            child.physicsBody?.velocity = CGVectorMake(0, 0)
+        }
+        gameOver = true
+        NSLog("gameOver")
+    }
+    
+    func tryAgain() {
+        gameOver = false
+        // TODO
+    }
+    
+    func pipe(pipe: SKNode?,contactEdge edge: SKNode?) {
+        if pipe?.position.x <= 0 {
+            pipe?.removeFromParent()
+        }
     }
 }
 
