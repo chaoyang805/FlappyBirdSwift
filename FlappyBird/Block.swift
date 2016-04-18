@@ -16,23 +16,18 @@ class Block: SKSpriteNode {
     
     class func blockInDirection(direction: Direction, withHeightRatio ratio: CGFloat) -> Block {
         let instance: Block!
-        NSLog("ratio:\(ratio)")
         switch direction {
         case .Up:
             let rect = CGRect(x: 0, y: 1 - ratio, width: 1, height: ratio)
             let scaledBlock = SKTexture(rect: rect, inTexture: upBlockTexture)
-            NSLog("scaledUpBlock:\(scaledBlock.size()),rect:\(rect)")
             instance = Block(texture: scaledBlock)
         case .Down:
             let rect = CGRect(x: 0, y: 0, width: 1, height: ratio)
             let scaledBlock = SKTexture(rect: rect, inTexture: downBlockTexture)
-            NSLog("scaledDownBlock:\(scaledBlock.size()),rect:\(rect)")
-//            NSLog("scaledBlockheight:\(scaledBlock))
             instance = Block(texture: scaledBlock)
         }
-        NSLog("\(instance.frame.size.height)")
-        instance.xScale = 1.5
-        instance.yScale = 2
+        instance.xScale = 1.7
+        instance.yScale = 1.9
         // setup physicsbody
         instance.physicsBody = SKPhysicsBody(rectangleOfSize: instance.frame.size)
         instance.physicsBody?.affectedByGravity = false
@@ -42,10 +37,13 @@ class Block: SKSpriteNode {
         instance.physicsBody?.collisionBitMask = 0
         instance.physicsBody?.restitution = 0
         // move
-        instance.runAction(SKAction.repeatActionForever(SKAction.moveByX(-18, y: 0, duration: 0.3)))
+        instance.startMove()
         return instance
     }
     
+    func startMove() {
+        self.runAction(SKAction.repeatActionForever(SKAction.moveByX(-25, y: 0, duration: 0.3)))
+    }
     
 }
 
