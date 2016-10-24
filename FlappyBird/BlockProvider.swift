@@ -5,7 +5,6 @@
 //  Created by chaoyang805 on 16/4/15.
 //  Copyright © 2016年 jikexueyuan. All rights reserved.
 //
-
 import UIKit
 import SpriteKit
 
@@ -26,7 +25,7 @@ class BlockProvider: NSObject {
         
         super.init()
         
-        SKTexture.preloadTextures([upPipeTexture,downPipeTexture]) {
+        SKTexture.preload([upPipeTexture,downPipeTexture]) {
             self.textureInitialized = true
         }
     }
@@ -47,8 +46,8 @@ class BlockProvider: NSObject {
             }
         }
         
-        let upBlock = Block.blockInDirection(.Up, withHeightRatio: ratio)
-        let downBlock = Block.blockInDirection(.Down, withHeightRatio: 1 - ratio)
+        let upBlock = Block.blockInDirection(.up, withHeightRatio: ratio)
+        let downBlock = Block.blockInDirection(.down, withHeightRatio: 1 - ratio)
         
         upBlock.position = CGPoint(x: sceneSize.width, y: upBlock.frame.height / 2 + floorHeight)
         downBlock.position = CGPoint(x: sceneSize.width, y: sceneSize.height - downBlock.frame.height / 2)

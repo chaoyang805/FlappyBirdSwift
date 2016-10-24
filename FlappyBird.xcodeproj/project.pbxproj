@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		215335D81CBF8B42004A4E99 /* MainScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215335D71CBF8B42004A4E99 /* MainScene.swift */; };
 		215B5E981CC07C6C0060199B /* BlockProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 215B5E971CC07C6C0060199B /* BlockProvider.swift */; };
+		217540AF1CC4D71500248591 /* RecordManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217540AE1CC4D71500248591 /* RecordManager.swift */; };
+		218636BC1CC5CA2B007E2411 /* sfx_die.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 218636B71CC5CA2B007E2411 /* sfx_die.mp3 */; };
+		218636BD1CC5CA2B007E2411 /* sfx_hit.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 218636B81CC5CA2B007E2411 /* sfx_hit.mp3 */; };
+		218636BE1CC5CA2B007E2411 /* sfx_point.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 218636B91CC5CA2B007E2411 /* sfx_point.mp3 */; };
+		218636BF1CC5CA2B007E2411 /* sfx_swooshing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 218636BA1CC5CA2B007E2411 /* sfx_swooshing.mp3 */; };
+		218636C01CC5CA2B007E2411 /* sfx_wing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 218636BB1CC5CA2B007E2411 /* sfx_wing.mp3 */; };
 		2193C51E1CC36ADE00EEB283 /* BonusLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2193C51D1CC36ADE00EEB283 /* BonusLabel.swift */; };
 		2193C5211CC38A7C00EEB283 /* WelcomeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2193C5201CC38A7C00EEB283 /* WelcomeScene.swift */; };
 		2193C5231CC38AAB00EEB283 /* WelcomeScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 2193C5221CC38AAB00EEB283 /* WelcomeScene.sks */; };
@@ -41,23 +47,29 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		21340A341DBDFE380068C11A /* FlappyBird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlappyBird.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		21340A351DBDFE380068C11A /* FlappyBirdTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlappyBirdTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		21340A361DBDFE380068C11A /* FlappyBirdUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlappyBirdUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		215335D71CBF8B42004A4E99 /* MainScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainScene.swift; sourceTree = "<group>"; };
 		215B5E971CC07C6C0060199B /* BlockProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockProvider.swift; sourceTree = "<group>"; };
+		217540AE1CC4D71500248591 /* RecordManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecordManager.swift; sourceTree = "<group>"; };
+		218636B71CC5CA2B007E2411 /* sfx_die.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_die.mp3; sourceTree = "<group>"; };
+		218636B81CC5CA2B007E2411 /* sfx_hit.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_hit.mp3; sourceTree = "<group>"; };
+		218636B91CC5CA2B007E2411 /* sfx_point.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_point.mp3; sourceTree = "<group>"; };
+		218636BA1CC5CA2B007E2411 /* sfx_swooshing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_swooshing.mp3; sourceTree = "<group>"; };
+		218636BB1CC5CA2B007E2411 /* sfx_wing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sfx_wing.mp3; sourceTree = "<group>"; };
 		2193C51D1CC36ADE00EEB283 /* BonusLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BonusLabel.swift; sourceTree = "<group>"; };
 		2193C5201CC38A7C00EEB283 /* WelcomeScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WelcomeScene.swift; sourceTree = "<group>"; };
 		2193C5221CC38AAB00EEB283 /* WelcomeScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = WelcomeScene.sks; sourceTree = "<group>"; };
 		2193C5261CC391C300EEB283 /* SKButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SKButton.swift; sourceTree = "<group>"; };
-		21ADF0F21CBF361C00ACE558 /* FlappyBird.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FlappyBird.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21ADF0F51CBF361C00ACE558 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		21ADF0FB1CBF361C00ACE558 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		21ADF0FE1CBF361C00ACE558 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		21ADF1001CBF361C00ACE558 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		21ADF1031CBF361C00ACE558 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		21ADF1051CBF361C00ACE558 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		21ADF10A1CBF361C00ACE558 /* FlappyBirdTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlappyBirdTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		21ADF10E1CBF361C00ACE558 /* FlappyBirdTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlappyBirdTests.swift; sourceTree = "<group>"; };
 		21ADF1101CBF361C00ACE558 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		21ADF1151CBF361C00ACE558 /* FlappyBirdUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FlappyBirdUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		21ADF1191CBF361C00ACE558 /* FlappyBirdUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlappyBirdUITests.swift; sourceTree = "<group>"; };
 		21ADF11B1CBF361C00ACE558 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		21ECE5611CC28C8700AFBAB0 /* Block.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Block.swift; sourceTree = "<group>"; };
@@ -88,6 +100,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		218636C11CC5CD7A007E2411 /* Sound Files */ = {
+			isa = PBXGroup;
+			children = (
+				218636B71CC5CA2B007E2411 /* sfx_die.mp3 */,
+				218636B81CC5CA2B007E2411 /* sfx_hit.mp3 */,
+				218636B91CC5CA2B007E2411 /* sfx_point.mp3 */,
+				218636BA1CC5CA2B007E2411 /* sfx_swooshing.mp3 */,
+				218636BB1CC5CA2B007E2411 /* sfx_wing.mp3 */,
+			);
+			name = "Sound Files";
+			sourceTree = "<group>";
+		};
 		2193C51F1CC38A4C00EEB283 /* Scene */ = {
 			isa = PBXGroup;
 			children = (
@@ -114,28 +138,22 @@
 				21ADF0F41CBF361C00ACE558 /* FlappyBird */,
 				21ADF10D1CBF361C00ACE558 /* FlappyBirdTests */,
 				21ADF1181CBF361C00ACE558 /* FlappyBirdUITests */,
-				21ADF0F31CBF361C00ACE558 /* Products */,
+				21340A341DBDFE380068C11A /* FlappyBird.app */,
+				21340A351DBDFE380068C11A /* FlappyBirdTests.xctest */,
+				21340A361DBDFE380068C11A /* FlappyBirdUITests.xctest */,
 			);
-			sourceTree = "<group>";
-		};
-		21ADF0F31CBF361C00ACE558 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				21ADF0F21CBF361C00ACE558 /* FlappyBird.app */,
-				21ADF10A1CBF361C00ACE558 /* FlappyBirdTests.xctest */,
-				21ADF1151CBF361C00ACE558 /* FlappyBirdUITests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		21ADF0F41CBF361C00ACE558 /* FlappyBird */ = {
 			isa = PBXGroup;
 			children = (
+				218636C11CC5CD7A007E2411 /* Sound Files */,
 				21A915E01CC3D704007BF07D /* Widgets */,
 				2193C51F1CC38A4C00EEB283 /* Scene */,
 				21ADF0F51CBF361C00ACE558 /* AppDelegate.swift */,
 				21ADF0FB1CBF361C00ACE558 /* GameViewController.swift */,
 				215B5E971CC07C6C0060199B /* BlockProvider.swift */,
+				217540AE1CC4D71500248591 /* RecordManager.swift */,
 				21ADF0FD1CBF361C00ACE558 /* Main.storyboard */,
 				21ADF1001CBF361C00ACE558 /* Assets.xcassets */,
 				21ADF1021CBF361C00ACE558 /* LaunchScreen.storyboard */,
@@ -179,7 +197,7 @@
 			);
 			name = FlappyBird;
 			productName = FlappyBird;
-			productReference = 21ADF0F21CBF361C00ACE558 /* FlappyBird.app */;
+			productReference = 21340A341DBDFE380068C11A /* FlappyBird.app */;
 			productType = "com.apple.product-type.application";
 		};
 		21ADF1091CBF361C00ACE558 /* FlappyBirdTests */ = {
@@ -197,7 +215,7 @@
 			);
 			name = FlappyBirdTests;
 			productName = FlappyBirdTests;
-			productReference = 21ADF10A1CBF361C00ACE558 /* FlappyBirdTests.xctest */;
+			productReference = 21340A351DBDFE380068C11A /* FlappyBirdTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		21ADF1141CBF361C00ACE558 /* FlappyBirdUITests */ = {
@@ -215,7 +233,7 @@
 			);
 			name = FlappyBirdUITests;
 			productName = FlappyBirdUITests;
-			productReference = 21ADF1151CBF361C00ACE558 /* FlappyBirdUITests.xctest */;
+			productReference = 21340A361DBDFE380068C11A /* FlappyBirdUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -225,19 +243,22 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0730;
-				LastUpgradeCheck = 0730;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = jikexueyuan;
 				TargetAttributes = {
 					21ADF0F11CBF361C00ACE558 = {
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = F6SWAY5599;
+						LastSwiftMigration = 0800;
 					};
 					21ADF1091CBF361C00ACE558 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 						TestTargetID = 21ADF0F11CBF361C00ACE558;
 					};
 					21ADF1141CBF361C00ACE558 = {
 						CreatedOnToolsVersion = 7.3;
+						LastSwiftMigration = 0800;
 						TestTargetID = 21ADF0F11CBF361C00ACE558;
 					};
 				};
@@ -251,7 +272,7 @@
 				Base,
 			);
 			mainGroup = 21ADF0E91CBF361C00ACE558;
-			productRefGroup = 21ADF0F31CBF361C00ACE558 /* Products */;
+			productRefGroup = 21ADF0E91CBF361C00ACE558;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -267,7 +288,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				218636C01CC5CA2B007E2411 /* sfx_wing.mp3 in Resources */,
+				218636BF1CC5CA2B007E2411 /* sfx_swooshing.mp3 in Resources */,
+				218636BE1CC5CA2B007E2411 /* sfx_point.mp3 in Resources */,
+				218636BC1CC5CA2B007E2411 /* sfx_die.mp3 in Resources */,
 				2193C5231CC38AAB00EEB283 /* WelcomeScene.sks in Resources */,
+				218636BD1CC5CA2B007E2411 /* sfx_hit.mp3 in Resources */,
 				21ADF1041CBF361C00ACE558 /* LaunchScreen.storyboard in Resources */,
 				21ADF1011CBF361C00ACE558 /* Assets.xcassets in Resources */,
 				21ADF0FF1CBF361C00ACE558 /* Main.storyboard in Resources */,
@@ -295,6 +321,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				217540AF1CC4D71500248591 /* RecordManager.swift in Sources */,
 				215335D81CBF8B42004A4E99 /* MainScene.swift in Sources */,
 				2193C51E1CC36ADE00EEB283 /* BonusLabel.swift in Sources */,
 				21ADF0FC1CBF361C00ACE558 /* GameViewController.swift in Sources */,
@@ -371,8 +398,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -417,8 +446,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -437,6 +468,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				"Texture Atlas Format" = RGBA8888_PNG;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -449,11 +481,12 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = FlappyBird/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jikexueyuan.FlappyBird;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -464,11 +497,12 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = FlappyBird/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jikexueyuan.FlappyBird;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -481,6 +515,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jikexueyuan.FlappyBirdTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FlappyBird.app/FlappyBird";
 			};
 			name = Debug;
@@ -493,6 +528,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jikexueyuan.FlappyBirdTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FlappyBird.app/FlappyBird";
 			};
 			name = Release;
@@ -505,6 +541,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jikexueyuan.FlappyBirdUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = FlappyBird;
 			};
 			name = Debug;
@@ -516,6 +553,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jikexueyuan.FlappyBirdUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
 				TEST_TARGET_NAME = FlappyBird;
 			};
 			name = Release;

@@ -7,49 +7,53 @@
 //
 
 import SpriteKit
-public class SKButton: SKSpriteNode {
+
+class SKButton: SKSpriteNode {
     
     private var target: AnyObject?
     private var clickSelector: Selector!
-    private(set) var state: SKButtonState = .Normal {
+    private(set) var state: SKButtonState = .normal {
         didSet {
             switch state {
-            case .Normal:
+            case .normal:
                 
                 self.position.offsetByDeltaX(0, deltaY: 3)
-            case .HighLighted:
+            case .highLighted:
                 self.position.offsetByDeltaX(0, deltaY: -3)
             }
         }
     }
     
-    public func addTarget(target: AnyObject?, selector: Selector) {
-        userInteractionEnabled = true
+    public func addTarget(_ target: AnyObject?, selector: Selector) {
+        isUserInteractionEnabled = true
         self.target = target
+        
         self.clickSelector = selector
     }
     
-    let buttonSound = SKAction.playSoundFileNamed("sfx_swooshing", waitForCompletion: false)
+    let buttonSound = SKAction.playSoundFileNamed("sfx_swooshing.mp3", waitForCompletion: false)
     
-    override public func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        self.state = .HighLighted
-        self.runAction(buttonSound, withKey: "buttonSound")
+    override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        
+        self.state = .highLighted
+        self.run(buttonSound, withKey: "buttonSound")
         
     }
     
-    override public func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        self.state = .Normal
-        if self.frame.contains(touches.first!.locationInNode(self.parent!)) {
-            if target != nil && target!.respondsToSelector(clickSelector) {
-                target!.performSelector(clickSelector, withObject: self)
+    override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.state = .normal
+        if self.frame.contains(touches.first!.location(in: self.parent!)) {
+            if target != nil && target!.responds(to: clickSelector) {
+                let _ = target!.perform(clickSelector, with: self)
             }
         }
         
     }
+    
 }
 
 public enum SKButtonState {
-    case Normal
-    case HighLighted
+    case normal
+    case highLighted
 }
 

@@ -5,18 +5,16 @@
 //  Created by chaoyang805 on 16/4/17.
 //  Copyright © 2016年 jikexueyuan. All rights reserved.
 //
-
 import UIKit
 import SpriteKit
 class BonusLabel: NSObject {
     
-    private(set) var totalScore = 0
+    var totalScore = 0
     private var bitNode: SKSpriteNode
     private var tenNode: SKSpriteNode
     private var hundredNode: SKSpriteNode
     private var mainScene: SKScene!
     private var scoreTextures: [Int : SKTexture]
-    private var wellPrepared = false
     
     private var bitScore: Int {
         return totalScore % 10
@@ -29,6 +27,13 @@ class BonusLabel: NSObject {
     private var hundredScore: Int {
         return totalScore / 100
     }
+    
+    convenience init(score: Int) {
+        self.init()
+        self.totalScore = score
+    }
+    
+    
     
     override init() {
         bitNode = SKSpriteNode(imageNamed: "0")
@@ -44,16 +49,16 @@ class BonusLabel: NSObject {
     
     private func prepareTextures() {
         let atlas = SKTextureAtlas(named: "ScoreNumbers")
-        atlas.preloadWithCompletionHandler {
+        atlas.preload {
             for textureName in atlas.textureNames {
                 let texture = SKTexture(imageNamed: textureName)
-                let index = Int(textureName.substringToIndex(textureName.startIndex.advancedBy(1)))
+                let index = Int(textureName.substring(to: textureName.characters.index(textureName.startIndex, offsetBy: 1)))
                 self.scoreTextures[index!] = texture
             }
 
         }
     }
-    func attachToScene(scene: SKScene) {
+    func attachToScene(_ scene: SKScene) {
         mainScene = scene
         let position = CGPoint(x: scene.frame.width / 2, y: scene.frame.height / 5 * 4)
         bitNode.position = position
@@ -62,7 +67,7 @@ class BonusLabel: NSObject {
         
     }
     
-    func attachToNode(parentNode: SKNode,inPosition position: CGPoint) {
+    func attachToNode(_ parentNode: SKNode,inPosition position: CGPoint) {
 
         if hundredScore > 0 {
             hundredNode.removeFromParent()
@@ -94,12 +99,17 @@ class BonusLabel: NSObject {
             bitNode.position = position
             parentNode.addChild(bitNode)
         }
+        hundredNode.zPosition = 1
+        tenNode.zPosition = 1
+        bitNode.zPosition = 1
+        hundredNode.texture = scoreTextures[hundredScore]
+        tenNode.texture = scoreTextures[tenScore]
+        bitNode.texture = scoreTextures[bitScore]
     }
     
     func onAddBonus() {
-        
         totalScore += 1
-
+        
         if hundredScore > 0 {
             if hundredNode.parent == nil {
                 tenNode.position.offsetByDeltaX(tenNode.frame.width / 2, deltaY: 0)
@@ -112,7 +122,7 @@ class BonusLabel: NSObject {
             tenNode.texture = scoreTextures[tenScore]
             bitNode.texture = scoreTextures[bitScore]
             
-        } else if tenScore > 0 {
+        }  else if tenScore > 0 {
             
             if tenNode.parent == nil {
                 bitNode.position = CGPoint(x: mainScene.frame.width / 2 + bitNode.frame.width / 2 - 1, y: mainScene.frame.height / 5 * 4)
@@ -126,14 +136,13 @@ class BonusLabel: NSObject {
             
             bitNode.texture = scoreTextures[bitScore]
         }
-        
     }
     
 }
 
 extension CGPoint {
     
-    mutating func offsetByDeltaX(deltaX: CGFloat,deltaY: CGFloat) {
+    mutating func offsetByDeltaX(_ deltaX: CGFloat,deltaY: CGFloat) {
         self.x += deltaX
         self.y += deltaY
     }

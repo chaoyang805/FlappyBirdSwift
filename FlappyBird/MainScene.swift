@@ -7,6 +7,26 @@
 //
 
 import SpriteKit
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func <= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l <= r
+  default:
+    return !(rhs < lhs)
+  }
+}
+
 
 let EdgeCategory: UInt32 = 0x1 << 0
 let FloorCategory: UInt32 = 0x1 << 1
@@ -14,11 +34,13 @@ let BirdCategory: UInt32 = 0x1 << 2
 let BlockCategory: UInt32 = 0x1 << 3
 let BonusLineCategory: UInt32 = 0x1 << 4
 let CategoryNone: UInt32 = 0
+
 class MainScene: SKScene,SKPhysicsContactDelegate {
-    
+    // MARK: Properties
     var background: SKSpriteNode!
     var bird: SKSpriteNode!
     var floor: SKSpriteNode!
+    var bonusLine: SKSpriteNode!
     var bonusLabel: BonusLabel!
     
     var birdTextureAtlas: SKTextureAtlas!
@@ -30,12 +52,13 @@ class MainScene: SKScene,SKPhysicsContactDelegate {
     var started = false
     var gameOver = false
     
-    var bonusLine: SKSpriteNode!
+    lazy var recordManager = RecordManager()
     
     override init(size: CGSize) {
         super.init(size: size)
+
         let physicsFrame = CGRect(x: self.frame.origin.x - 50, y: self.frame.origin.y, width: self.frame.width + 100, height: self.frame.height)
-        physicsBody = SKPhysicsBody(edgeLoopFromRect: physicsFrame)
+        physicsBody = SKPhysicsBody(edgeLoopFrom: physicsFrame)
         physicsBody?.categoryBitMask = EdgeCategory
         physicsBody?.contactTestBitMask = 0
         physicsBody?.collisionBitMask = 0
@@ -50,14 +73,14 @@ class MainScene: SKScene,SKPhysicsContactDelegate {
         groundTextureAtlas = SKTextureAtlas(named: "GroundImages")
         
         bonusLabel = BonusLabel()
+        
     }
-    
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    override func didMoveToView(view: SKView) {
+    override func didMove(to view: SKView) {
         self.addGround()
         self.addBird()
         self.addBonusLine()
@@ -66,9 +89,10 @@ class MainScene: SKScene,SKPhysicsContactDelegate {
     }
     
     func addBonusLine() {
-        self.bonusLine = SKSpriteNode(color: UIColor.clearColor(), size: CGSize(width: 1, height: 1))
+    
+        self.bonusLine = SKSpriteNode(color: UIColor.clear, size: CGSize(width: 1, height: 1))
         self.bonusLine.position = CGPoint(x: self.bird.position.x, y: self.floor.frame.height + 5)
-        self.bonusLine.physicsBody = SKPhysicsBody(rectangleOfSize: self.bonusLine.size)
+        self.bonusLine.physicsBody = SKPhysicsBody(rectangleOf: self.bonusLine.size)
         self.bonusLine.physicsBody?.affectedByGravity = false
         self.bonusLine.physicsBody?.allowsRotation = false
         self.bonusLine.physicsBody?.categoryBitMask = BonusLineCategory
@@ -86,18 +110,18 @@ class MainScene: SKScene,SKPhysicsContactDelegate {
         
         self.bird = SKSpriteNode(texture: self.birdTextures[0])
         bird.setScale(2.5)
-        self.bird.position = CGPoint(x: self.frame.width / 3, y: CGRectGetMidY(self.frame))
+        self.bird.position = CGPoint(x: self.frame.width / 3, y: self.frame.midY)
         
-        let moveUpAction = SKAction.moveBy(CGVector(dx:0,dy:10), duration: 0.3)
-        moveUpAction.timingMode = .EaseInEaseOut
-        let moveDownAction = SKAction.moveBy(CGVector(dx:0,dy: -10), duration: 0.3)
-        moveDownAction.timingMode = .EaseInEaseOut
+        let moveUpAction = SKAction.move(by: CGVector(dx:0,dy:10), duration: 0.3)
+        moveUpAction.timingMode = .easeInEaseOut
+        let moveDownAction = SKAction.move(by: CGVector(dx:0,dy: -10), duration: 0.3)
+        moveDownAction.timingMode = .easeInEaseOut
         let shakeAction = SKAction.sequence([moveUpAction,moveDownAction])
-        bird?.runAction(SKAction.repeatActionForever(shakeAction), withKey: "birdShake")
+        bird?.run(SKAction.repeatForever(shakeAction), withKey: "birdShake")
         self.addChild(self.bird)
         
         bird.zPosition = 1
-        bird.physicsBody = SKPhysicsBody(rectangleOfSize: bird.frame.size)
+        bird.physicsBody = SKPhysicsBody(rectangleOf: bird.frame.size)
         bird.physicsBody?.affectedByGravity = false
         bird.physicsBody?.allowsRotation = false
         
@@ -123,11 +147,11 @@ class MainScene: SKScene,SKPhysicsContactDelegate {
         floor.setScale(scale)
         
         floor.position = CGPoint(x: floor.frame.width / 2, y: floor.frame.height / 2)
-        let action = SKAction.animateWithTextures(groundTextures, timePerFrame: 0.024, resize: false, restore: true)
-        floor.runAction(SKAction.repeatActionForever(action), withKey: "groundMove")
+        let action = SKAction.animate(with: groundTextures, timePerFrame: 0.024, resize: false, restore: true)
+        floor.run(SKAction.repeatForever(action), withKey: "groundMove")
         addChild(floor)
         
-        floor.physicsBody = SKPhysicsBody(rectangleOfSize: floor.frame.size)
+        floor.physicsBody = SKPhysicsBody(rectangleOf: floor.frame.size)
         floor.physicsBody?.affectedByGravity = false
         floor.physicsBody?.categoryBitMask = FloorCategory
         floor.physicsBody?.contactTestBitMask = 0
@@ -143,23 +167,23 @@ class MainScene: SKScene,SKPhysicsContactDelegate {
         
         let getReady = SKSpriteNode(imageNamed: "GetReady")
         getReady.position = CGPoint(x: guideNode.position.x, y: guideNode.position.y + guideNode.frame.width / 2 + getReady.frame.height / 2 + 10)
-        getReady.setScale(2.5)
+        getReady.setScale(2)
         getReady.name = "GetReady"
         addChild(getReady)
     }
     
     func flyTheBird() {
-        self.bird.removeActionForKey("birdShake")
-        let action = SKAction.animateWithTextures(self.birdTextures, timePerFrame: 0.1)
-        self.bird.runAction(SKAction.repeatActionForever(action),withKey: "birdFly")
+        self.bird.removeAction(forKey: "birdShake")
+        let action = SKAction.animate(with: self.birdTextures, timePerFrame: 0.1)
+        self.bird.run(SKAction.repeatForever(action),withKey: "birdFly")
         bird.physicsBody?.affectedByGravity = true
     }
     
     
-    var lastUpdateTime: NSTimeInterval = -1
+    var lastUpdateTime: TimeInterval = -1
     var blockProvider: BlockProvider!
     
-    override func update(currentTime: NSTimeInterval) {
+    override func update(_ currentTime: TimeInterval) {
         
         if started {
             
@@ -178,39 +202,42 @@ class MainScene: SKScene,SKPhysicsContactDelegate {
             }
         }
     }
-    let birdRotateAction = SKAction.rotateToAngle(CGFloat(M_PI_4 / 2), duration: 0.2, shortestUnitArc: true)
-    let birdEmptyAction = SKAction.rotateToAngle(CGFloat(0), duration: 0.3, shortestUnitArc: true)
-    let birdDropAction = SKAction.rotateToAngle(CGFloat(-M_PI_2), duration: 0.3, shortestUnitArc: true)
+    let birdRotateAction = SKAction.rotate(toAngle: CGFloat(M_PI_4 / 2), duration: 0.2, shortestUnitArc: true)
+    let birdEmptyAction = SKAction.rotate(toAngle: CGFloat(0), duration: 0.3, shortestUnitArc: true)
+    let birdDropAction = SKAction.rotate(toAngle: CGFloat(-M_PI_2), duration: 0.3, shortestUnitArc: true)
     var actionSequence: SKAction {
         return SKAction.sequence([birdRotateAction,birdEmptyAction,birdDropAction])
     }
-    let soundAction: SKAction = SKAction.playSoundFileNamed("sfx_wing", waitForCompletion: false)
+    let soundAction: SKAction = SKAction.playSoundFileNamed("sfx_wing.mp3", waitForCompletion: false)
+    
     // MARK: touches callback
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if gameOver {
             return
         }
-        
+       
         if !started {
             started = true
-            childNodeWithName("GuideNode")?.removeFromParent()
-            childNodeWithName("GetReady")?.removeFromParent()
+            childNode(withName: "GuideNode")?.removeFromParent()
+            childNode(withName: "GetReady")?.removeFromParent()
             flyTheBird()
             return
         }
-        
-        bird.physicsBody?.velocity = CGVector(dx: 0, dy: 400)
-        if let cacheAction = bird.actionForKey("BirdRotate") {
-            bird.runAction(cacheAction, withKey: "BirdRotate")
-        } else {
-            bird.runAction(actionSequence, withKey: "BirdRotate")
+        if bird.position.y < self.frame.height + bird.frame.height / 2 {
+            bird.physicsBody?.velocity = CGVector(dx: 0, dy: 400)
         }
-        bird.runAction(soundAction, withKey: "Wing")
+        if let cacheAction = bird.action(forKey: "BirdRotate") {
+            bird.run(cacheAction, withKey: "BirdRotate")
+        } else {
+            bird.run(actionSequence, withKey: "BirdRotate")
+        }
+        bird.run(soundAction, withKey: "Wing")
         
     }
+
     
     // MARK: SKPhysicsContactDelegate
-    func didBeginContact(contact: SKPhysicsContact) {
+    func didBegin(_ contact: SKPhysicsContact) {
         let nodeA = contact.bodyA.node
         let nodeB = contact.bodyB.node
         
@@ -230,17 +257,18 @@ class MainScene: SKScene,SKPhysicsContactDelegate {
                 pipe(nodeA, contactEdge: nodeB)
             }
         case BonusLineCategory | BlockCategory:
-            self.runAction(bonusSound, withKey: "bonusSound")
+            self.run(bonusSound, withKey: "bonusSound")
             bonusLabel.onAddBonus()
         default:
             break
         }
     }
-    let bonusSound = SKAction.playSoundFileNamed("sfx_point", waitForCompletion: false)
-    let birdDiedSound = SKAction.playSoundFileNamed("sfx_die", waitForCompletion: false)
-    let birdHitSound = SKAction.playSoundFileNamed("sfx_hit", waitForCompletion: false)
+
+    let bonusSound = SKAction.playSoundFileNamed("sfx_point.mp3", waitForCompletion: false)
+    let birdDiedSound = SKAction.playSoundFileNamed("sfx_die.mp3", waitForCompletion: false)
+    let birdHitSound = SKAction.playSoundFileNamed("sfx_hit.mp3", waitForCompletion: false)
     // MARK: game logic
-    func onGameOver(hitBlock: Bool) {
+    func onGameOver(_ hitBlock: Bool) {
         if gameOver {
             return
         }
@@ -248,30 +276,30 @@ class MainScene: SKScene,SKPhysicsContactDelegate {
             child.removeAllActions()
         }
         
-        let flashNode = SKSpriteNode(color: UIColor.whiteColor(), size: self.frame.size)
+        let flashNode = SKSpriteNode(color: UIColor.white, size: self.frame.size)
         flashNode.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
         flashNode.alpha = 0
         flashNode.zPosition = 2
         addChild(flashNode)
-        let fade1 = SKAction.fadeAlphaTo(0.7, duration: 0.1)
-        let fade2 = SKAction.fadeAlphaTo(0, duration: 0.1)
-        flashNode.runAction(SKAction.sequence([fade1,fade2])) {
+        let fade1 = SKAction.fadeAlpha(to: 0.7, duration: 0.1)
+        let fade2 = SKAction.fadeAlpha(to: 0, duration: 0.1)
+        flashNode.run(SKAction.sequence([fade1,fade2]), completion: {
             flashNode.removeFromParent()
-        }
+        }) 
         
         bird.physicsBody?.velocity = CGVector(dx: 0, dy: 0)
         bird.physicsBody?.affectedByGravity = false
-        bird.runAction(birdHitSound, withKey: "birdHitSound")
+        bird.run(birdHitSound, withKey: "birdHitSound")
         
         if hitBlock {
-            bird.runAction(birdDiedSound, withKey: "birdDiedSound")
+            bird.run(birdDiedSound, withKey: "birdDiedSound")
         }
        
-        let birdDied = SKAction.rotateToAngle(CGFloat(-M_PI_2), duration: 0.1, shortestUnitArc: true)
-        let birdDown = SKAction.moveToY(floor.position.y + floor.frame.height / 2, duration: 0.5)
+        let birdDied = SKAction.rotate(toAngle: CGFloat(-M_PI_2), duration: 0.1, shortestUnitArc: true)
+        let birdDown = SKAction.moveTo(y: floor.position.y + floor.frame.height / 2, duration: 0.5)
         
-        bird.runAction(SKAction.sequence([birdDied,birdDown]), completion: {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(NSEC_PER_MSEC * 300)), dispatch_get_main_queue(), {
+        bird.run(SKAction.sequence([birdDied,birdDown]), completion: {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(NSEC_PER_MSEC * 300)) / Double(NSEC_PER_SEC), execute: {
                 self.showGameOver()
             })
         })
@@ -280,46 +308,64 @@ class MainScene: SKScene,SKPhysicsContactDelegate {
         started = false
     }
     
+    var recordLabel = BonusLabel(score: 10)
     func showGameOver() {
-        let scoreBoard = SKSpriteNode(imageNamed: "ScoreInfo")
-        scoreBoard.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2)
-        scoreBoard.setScale(2)
-        addChild(scoreBoard)
-        bonusLabel.attachToNode(scoreBoard, inPosition: CGPoint(x: 40, y: 7))
         
         let gameOver = SKSpriteNode(imageNamed: "GameOver")
         gameOver.setScale(2)
-        gameOver.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 2 + scoreBoard.frame.height / 2 + gameOver.frame.height / 2 + 20)
+        gameOver.position = CGPoint(x: self.frame.width / 2, y: self.frame.height / 4 * 3)
         addChild(gameOver)
         
-        let retryBtn = SKButton(imageNamed: "StartButton")
-        retryBtn.addTarget(self, selector: #selector(MainScene.tryAgain(_:)))
-        retryBtn.setScale(1.5)
-        retryBtn.zPosition = 1
-        retryBtn.position = CGPoint(x: 85.79, y: 170.15)
-        addChild(retryBtn)
+        let scoreBoard = SKSpriteNode(imageNamed: "ScoreInfo")
+        scoreBoard.zPosition = 1
+        scoreBoard.position = CGPoint(x: self.frame.width / 2, y: -scoreBoard.frame.height)
+        scoreBoard.setScale(2)
         
-        let rankBtn = SKButton(imageNamed: "RankButton")
-        rankBtn.addTarget(self, selector: #selector(MainScene.ranking(_:)))
-        rankBtn.setScale(1.5)
-        rankBtn.zPosition = 1
-        rankBtn.position = CGPoint(x: 236.309, y: 170.15)
-        addChild(rankBtn)
+        self.addChild(scoreBoard)
+        self.bonusLabel.attachToNode(scoreBoard, inPosition: CGPoint(x: 40, y: 7))
+        
+        let _ = recordManager.writeNewScore(bonusLabel.totalScore)
+        recordLabel.totalScore = recordManager.lastRecord
+        self.recordLabel.attachToNode(scoreBoard, inPosition: CGPoint(x: 40, y: -13))
+        
+        let moveUp = SKAction.moveBy(x: 0, y: 5, duration: 0.1)
+        let moveDown = SKAction.moveBy(x: 0, y: -5, duration: 0.1)
+        gameOver.run(SKAction.sequence([moveUp,moveDown]), completion: {
+            
+            let showAction = SKAction.moveTo(y: self.frame.height / 2, duration: 0.5)
+            showAction.timingMode = .easeOut
+            scoreBoard.run(showAction, completion: {
+                
+                let retryBtn = SKButton(imageNamed: "StartButton")
+                retryBtn.addTarget(self, selector: #selector(MainScene.tryAgain(_:)))
+                retryBtn.setScale(1.5)
+                retryBtn.zPosition = 1
+                retryBtn.position = CGPoint(x: 85.79, y: 170.15)
+                self.addChild(retryBtn)
+                
+                let rankBtn = SKButton(imageNamed: "RankButton")
+                rankBtn.addTarget(self, selector: #selector(MainScene.ranking(_:)))
+                rankBtn.setScale(1.5)
+                rankBtn.zPosition = 1
+                rankBtn.position = CGPoint(x: 236.309, y: 170.15)
+                self.addChild(rankBtn)
+            })
+        }) 
         
     }
     
     // MARK: Button selector
-    func ranking(sender: SKButton) {
+    func ranking(_ sender: SKButton) {
         NSLog("see ranking...")
     }
     
-    func tryAgain(sender: SKButton) {
+    func tryAgain(_ sender: SKButton) {
         gameOver = false
         
-        self.view?.presentScene(MainScene(size: CGSizeMake(320, 568)),transition: SKTransition.fadeWithDuration(0.5))
+        self.view?.presentScene(MainScene(size: CGSize(width: 320, height: 568)),transition: SKTransition.fade(withDuration: 0.5))
     }
     
-    func pipe(pipe: SKNode?,contactEdge edge: SKNode?) {
+    func pipe(_ pipe: SKNode?,contactEdge edge: SKNode?) {
         if pipe?.position.x <= 0 {
             
             pipe?.removeAllActions()
@@ -330,7 +376,7 @@ class MainScene: SKScene,SKPhysicsContactDelegate {
 }
 
 extension CGSize {
-    func CGSizeWithScale(scale: CGFloat) -> CGSize {
-        return CGSizeMake(self.width * scale, self.height * scale)
+    func CGSizeWithScale(_ scale: CGFloat) -> CGSize {
+        return CGSize(width: self.width * scale, height: self.height * scale)
     }
 }
